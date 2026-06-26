@@ -1,18 +1,23 @@
 import express from "express"
-// import { prisma } from "./utils/prisma.js"
 import { prisma } from "./lib/prisma.ts"
+import cors from "cors"
 
 const app = express()
 const PORT = 3000
 
-app.use(express.json ())
+app.use(cors())
+app.use(express.json())
 
-// app.get("/", async (req, res) =>{
-
-//     const user = await prisma.user.findMany()
-//     res.json(user)
-// })
+app.get("/produtos", async (req, res) => {
+  try{
+  const itens = await prisma.produtos.findMany()
+  res.json(itens)
+  }catch(error){
+    res.status(500).json({error: "Erro ao retornar produtos"})
+  }
+})
 
 app.listen(PORT, () => {
-  console.log("servidor rodando"); // Isso é uma mensagem de log, NÃO um endereço
+  console.log("API rodando"); // Isso é uma mensagem de log, NÃO um endereço
 });
+
