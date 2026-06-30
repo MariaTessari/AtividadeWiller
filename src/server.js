@@ -17,6 +17,17 @@ app.get("/produtos", async (req, res) => {
   }
 })
 
+app.post("/produtos", async(req, res) => {
+const{nome, categoria, quantidade} = req.body
+
+const novoItem = await
+prisma.produtos.create({
+
+  data:{nome, categoria, quantidade: Number(quantidade)}
+})
+
+});
+
 app.listen(PORT, () => {
   console.log("API rodando"); // Isso é uma mensagem de log, NÃO um endereço
 });
