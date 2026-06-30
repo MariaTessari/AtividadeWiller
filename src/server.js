@@ -32,7 +32,7 @@ res.status(201).json(novoItem)
 app.put("/produtos/:id", async(req, res) => {
   const {id} = req.params
   const {nome, categoria, quantidade} = req.body
-
+try{
   const produtoAtualizado = await prisma.produtos.update({
     where: {id: Number(id)},
     data: {
@@ -41,7 +41,27 @@ app.put("/produtos/:id", async(req, res) => {
       quantidade: Number(quantidade)
     }
   })
+  res.json(produtoAtualizado)
+}catch(error){
+  res.status(404).json({error: "Não foi possível atualizar o produto"})
+}
 })
+
+
+app.delete("/produtos/:id", async(req, res) => {
+  try{
+  const{id} = req.params;
+  await prisma.produtos.delete({
+    where: {id:Number(id)}
+  })
+   res.status(204).send()
+} catch(error){
+  res.status(500).json({error: "Erro ao excluir produto"})
+} 
+
+})
+
+
 
 app.listen(PORT, () => {
   console.log("API rodando"); // Isso é uma mensagem de log, NÃO um endereço
